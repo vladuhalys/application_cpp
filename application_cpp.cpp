@@ -22,6 +22,18 @@ enum PhoneIndex
     IPhoneIndex = 1
 };
 
+bool operator ==(Application& app1, Application& app2)
+{
+    return app1.getName() == app2.getName() && app1.getVersion() == app2.getVersion();
+}
+
+bool operator !=(Application& app1, Application& app2)
+{
+    return !(app1 == app2);
+}
+
+
+
 int main()
 {
     Store ** store = new Store*[2];
@@ -34,6 +46,7 @@ int main()
     app[2] = new Application("WhatsApp", "400.0");
     app[3] = new Application("Telegram", "500.0");
     app[4] = new Application("TikTok", "100.0");
+    
 
     for (int i = 0; i < 5; i++)
     {

@@ -2,15 +2,10 @@
 #define STORE_H
 
 #include <iostream>
+#include <string>
 using namespace std;
 
-class IApplication
-{
-public:
-    void virtual getInfo() = 0;
-};
-
-class Application : public IApplication
+class Application
 {
 protected:
     string _name;
@@ -24,14 +19,30 @@ public:
     void setVersion(string version) { this->_version = version; }
     string getVersion() { return this->_version; }
 
-    void getInfo() override
+    //post increment
+    Application operator++(int)
     {
-        cout << "Name: " << this->_name << endl;
-        cout << "Version: " << this->_version << endl;
+        Application temp = *this;
+        this->_version = to_string(stod(this->_version) + 1);
+        return temp;
     }
 
+    //pre increment
+    Application& operator++()
+    {
+        this->_version = to_string(stod(this->_version) + 1);
+        return *this;
+    }
+    
     virtual ~Application(){}
 };
+
+ostream& operator<<(ostream& out, Application& rhs)
+{
+    out << "Name: " << rhs.getName() << endl;
+    out << "Version: " << rhs.getVersion() << endl;
+    return out;
+}
 
 class IStore
 {
@@ -41,6 +52,8 @@ public:
     void virtual updateApp(Application& app) = 0;
     void virtual showAllApps() = 0;
 };
+
+
 
 class Store : public IStore
 {
@@ -112,7 +125,7 @@ public:
         for (int i = 0; i < _count; i++)
         {
             cout << "Application " << i + 1 << ":" << endl;
-            _application[i].getInfo();
+            cout << _application[i] << endl;
         }
     }
 
